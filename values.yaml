@@ -1,0 +1,11 @@
+image:
+  repository: python
+  tag: "3.13.5-slim"
+  pullPolicy: IfNotPresent
+
+persistence:
+  enabled: true
+  size: 2Gi
+  mountPath: /hf-cache
+
+resources: {}
