@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "huggingface-cli.fullname" . }}
+  labels:
+    app: {{ include "huggingface-cli.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "huggingface-cli.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "huggingface-cli.name" . }}
+    spec:
+      containers:
+        - name: huggingface
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/bash", "-c", "apt-get update && apt-get install -y git && pip install --upgrade huggingface_hub && tail -f /dev/null"]
+          volumeMounts:
+            - name: hf-cache
+              mountPath: {{ .Values.persistence.mountPath }}
+          env:
+            - name: HF_HOME
+              value: "{{ .Values.persistence.mountPath }}"
+          stdin: true
+          tty: true
+      volumes:
+        - name: hf-cache
+          persistentVolumeClaim:
+            claimName: {{ include "huggingface-cli.fullname" . }}-pvc
