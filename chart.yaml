@@ -1,0 +1,11 @@
+apiVersion: v2
+name: huggingface-cli
+description: A lightweight Hugging Face CLI app for TrueNAS SCALE
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - huggingface
+  - cli
+  - hf
+  - trueNAS
